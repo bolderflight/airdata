@@ -1,0 +1,58 @@
+cmake_minimum_required(VERSION 3.13)
+# Project information
+project(Airdata
+  VERSION 1.0
+  DESCRIPTION "Airdata functions."
+  LANGUAGES C CXX
+)
+# Add the library target
+add_library(airdata
+	include/airdata/airdata.h
+ 	src/airdata/airdata.cc
+)
+# Setup include directories 
+target_include_directories(airdata PUBLIC 
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+ 	$<INSTALL_INTERFACE:include>
+)
+# Example and unit testing if this project is built separately
+if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+	# Add the example target
+	add_executable(airdata_example examples/airdata_example.cc)
+	# Add the includes
+	target_include_directories(airdata_example PUBLIC 
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>
+	)
+	# Link libraries to the test target
+	target_link_libraries(airdata_example
+		PRIVATE 
+			airdata
+	)
+	# Fetch google test
+	include(FetchContent)
+	FetchContent_Declare(
+		googletest
+		GIT_REPOSITORY https://github.com/google/googletest.git
+	)
+	FetchContent_MakeAvailable(googletest)
+	enable_testing()
+	include(GoogleTest)
+	# Add the test target
+	add_executable(airdata_test tests/airdata_test.cc)
+	# Add the includes
+	target_include_directories(airdata_test PUBLIC 
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>
+	)
+	# Link libraries to the test target
+	target_link_libraries(airdata_test
+		PRIVATE 
+			airdata
+			gtest_main 
+			gtest
+			gmock
+	)
+	# Discover unit tests
+	gtest_discover_tests(airdata_test)
+endif()
