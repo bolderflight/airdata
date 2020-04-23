@@ -1,0 +1,32 @@
+stages:
+  - lint
+  - build
+  - test
+
+Lint:
+  stage: lint
+  tags:
+    - bfs
+  script: 
+    - cpplint.py --verbose=0 src/airdata/airdata.cc
+    - cpplint.py --verbose=0 include/airdata/airdata.h
+
+Compile:
+  stage: build
+  tags:
+    - bfs
+  script:
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+  artifacts:
+    paths:
+      - build/airdata_test
+
+Test Airdata:
+  stage: test
+  tags:
+    - bfs
+  script:
+    - ./build/airdata_test
