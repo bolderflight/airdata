@@ -5,16 +5,31 @@ project(Airdata
   DESCRIPTION "Airdata functions."
   LANGUAGES C CXX
 )
+
+include(FetchContent)
+FetchContent_Declare(
+	types
+	GIT_REPOSITORY git@gitlab.com:bolderflight/software/types.git
+)
+FetchContent_MakeAvailable(types)
+
 # Add the library target
 add_library(airdata
 	include/airdata/airdata.h
  	src/airdata/airdata.cc
 )
+
+target_link_libraries(airdata 
+	PUBLIC 
+		types	
+)
+
 # Setup include directories 
 target_include_directories(airdata PUBLIC 
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
  	$<INSTALL_INTERFACE:include>
 )
+
 # Example and unit testing if this project is built separately
 if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
 	# Add the example target
