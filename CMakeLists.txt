@@ -10,6 +10,8 @@ include(FetchContent)
 FetchContent_Declare(
 	types
 	GIT_REPOSITORY git@gitlab.com:bolderflight/software/types.git
+	GIT_TAG			v4.1.0
+
 )
 FetchContent_MakeAvailable(types)
 

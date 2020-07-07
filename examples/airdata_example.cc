@@ -42,29 +42,30 @@ int main() {
 
   std::cout << "--- Functions ---" << std::endl;
 
-  types::Speed ias = airdata::GetIas(dpress);
+  types::Speed ias = airdata::CalcIas(dpress);
   std::cout << "IAS (m/s): " << ias.mps() << std::endl;  // 28.5457
 
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
   std::cout << "TAS (m/s): " << tas.mps() << std::endl;  // 30
 
-  types::Altitude pa = airdata::GetPressureAltitude(stpress);
+  types::Altitude pa = airdata::CalcPressureAltitude(stpress);
   std::cout << "Pressure Altitude (m): " << pa.m() << std::endl;  // 0
 
-  types::Altitude AGL = airdata::GetAGL(stpress, bias);
+  types::Altitude AGL = airdata::CalcAGL(stpress, bias);
   std::cout << "AGL (m): " << AGL.m() << std::endl;  // -100
 
-  types::Altitude msl = airdata::GetMSL(agl, alt);
+  types::Altitude msl = airdata::CalcMSL(agl, alt);
   std::cout << "MSL (m): " << msl.m() << std::endl;  // 1000
 
-  types::Altitude da = airdata::GetDensityAltitude(stpress, temp);
+  types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
   std::cout << "Density Altitude (m): " << da.m() << std::endl;  // 0
 
-  types::Temperature eoat = airdata::EstimateOAT(temp, alt);
-  std::cout << "Estimated OAT (C): " << eoat.c() << std::endl;  // 11.75
+  types::Temperature eoat = airdata::CalcOAT(temp, alt);
+  std::cout << "OAT (C): " << eoat.c() << std::endl;  // 11.75
 
-  std::cout << "Air Density (kg-m^3): " <<
-    airdata::GetDensity_kgm3(stpress, temp) << std::endl;  // 1.225
+  types::Density density = airdata::CalcDensity(stpress, temp);
+  std::cout << "Air Density (kg-m^3): " << density.kgpm3() << std::endl;
+        // 1.225
 
   return 0;
 }

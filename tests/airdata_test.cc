@@ -14,7 +14,7 @@
 TEST(Ias, Zero) {
   types::DiffPressure dpress;
   dpress.pa(0.0f);
-  types::Speed ias = airdata::GetIas(dpress);
+  types::Speed ias = airdata::CalcIas(dpress);
 
   EXPECT_EQ(0.0f, ias.mps());
 }
@@ -22,7 +22,7 @@ TEST(Ias, Zero) {
 TEST(Ias, Negative) {
   types::DiffPressure dpress;
   dpress.pa(-10.0f);
-  types::Speed ias = airdata::GetIas(dpress);
+  types::Speed ias = airdata::CalcIas(dpress);
 
   EXPECT_FLOAT_EQ(0.0f, ias.mps());
 }
@@ -30,7 +30,7 @@ TEST(Ias, Negative) {
 TEST(Ias, Positive) {
   types::DiffPressure dpress;
   dpress.pa(500.0f);
-  types::Speed ias = airdata::GetIas(dpress);
+  types::Speed ias = airdata::CalcIas(dpress);
 
   EXPECT_NEAR(28.5459f, ias.mps(), 0.01f);
 }
@@ -41,7 +41,7 @@ TEST(Tas, ZeroAll) {
   speed.mps(0.0f);
   types::Temperature temp;
   temp.c(0.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_EQ(0.0f, tas.mps());
 }
@@ -51,7 +51,7 @@ TEST(Tas, ZeroAs) {
   speed.mps(0.0f);
   types::Temperature temp;
   temp.c(15.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_FLOAT_EQ(0.0f, tas.mps());
 }
@@ -61,7 +61,7 @@ TEST(Tas, ZeroT) {
   speed.mps(50.0f);
   types::Temperature temp;
   temp.c(0.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_NEAR(48.6812f, tas.mps(), 0.01f);
 }
@@ -71,7 +71,7 @@ TEST(Tas, NegativeAll) {
   speed.mps(-10.0f);
   types::Temperature temp;
   temp.c(-10.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_FLOAT_EQ(0.0f, tas.mps());
 }
@@ -81,7 +81,7 @@ TEST(Tas, NegativeAs) {
   speed.mps(-10.0f);
   types::Temperature temp;
   temp.c(15.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_FLOAT_EQ(0.0f, tas.mps());
 }
@@ -91,7 +91,7 @@ TEST(Tas, NegativeT) {
   speed.mps(50.0f);
   types::Temperature temp;
   temp.c(-10.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_NEAR(47.7818f, tas.mps(), 0.1f);
 }
@@ -101,7 +101,7 @@ TEST(Tas, Positive) {
   speed.mps(30.0f);
   types::Temperature temp;
   temp.c(30.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_NEAR(30.7709f, tas.mps(), 0.01f);
 }
@@ -111,7 +111,7 @@ TEST(Tas, SeaLevelT) {
   speed.mps(30.0f);
   types::Temperature temp;
   temp.c(15.0f);
-  types::Speed tas = airdata::GetTas(speed, temp);
+  types::Speed tas = airdata::CalcTas(speed, temp);
 
   EXPECT_NEAR(30.0f, tas.mps(), 0.01f);
 }
@@ -120,7 +120,7 @@ TEST(Tas, SeaLevelT) {
 TEST(PressureAltitude, Zero) {
   types::StaticPressure stpress;
   stpress.pa(0.0f);
-  types::Altitude pa = airdata::GetPressureAltitude(stpress);
+  types::Altitude pa = airdata::CalcPressureAltitude(stpress);
 
   EXPECT_NEAR(44330.7692f, pa.m(), 0.01f);
 }
@@ -128,7 +128,7 @@ TEST(PressureAltitude, Zero) {
 TEST(PressureAltitude, Negative) {
   types::StaticPressure stpress;
   stpress.pa(-100.0f);
-  types::Altitude pa = airdata::GetPressureAltitude(stpress);
+  types::Altitude pa = airdata::CalcPressureAltitude(stpress);
 
   EXPECT_NEAR(44330.7692f, pa.m(), 0.01f);
 }
@@ -136,7 +136,7 @@ TEST(PressureAltitude, Negative) {
 TEST(PressureAltitude, Positive) {
   types::StaticPressure stpress;
   stpress.pa(26500.0f);
-  types::Altitude pa = airdata::GetPressureAltitude(stpress);
+  types::Altitude pa = airdata::CalcPressureAltitude(stpress);
 
   EXPECT_NEAR(9984.2683f, pa.m(), 0.01f);
 }
@@ -144,7 +144,7 @@ TEST(PressureAltitude, Positive) {
 TEST(PressureAltitude, SeaLevel) {
   types::StaticPressure stpress;
   stpress.pa(101325.0f);
-  types::Altitude pa = airdata::GetPressureAltitude(stpress);
+  types::Altitude pa = airdata::CalcPressureAltitude(stpress);
 
   EXPECT_FLOAT_EQ(0.0f, pa.m());
 }
@@ -155,7 +155,7 @@ TEST(AGL, ZeroC) {
   stpress.pa(101325.0f);
   types::Altitude bias;
   bias.m(0.0f);
-  types::Altitude agl = airdata::GetAGL(stpress, bias);
+  types::Altitude agl = airdata::CalcAGL(stpress, bias);
 
   EXPECT_FLOAT_EQ(0.0f, agl.m());
 }
@@ -165,7 +165,7 @@ TEST(AGL, NegativeC) {
   stpress.pa(101325.0f);
   types::Altitude bias;
   bias.m(-100.0f);
-  types::Altitude agl = airdata::GetAGL(stpress, bias);
+  types::Altitude agl = airdata::CalcAGL(stpress, bias);
 
   EXPECT_FLOAT_EQ(100.0f, agl.m());
 }
@@ -175,7 +175,7 @@ TEST(AGL, PositiveC) {
   stpress.pa(101325.0f);
   types::Altitude bias;
   bias.m(100.0f);
-  types::Altitude agl = airdata::GetAGL(stpress, bias);
+  types::Altitude agl = airdata::CalcAGL(stpress, bias);
 
   EXPECT_FLOAT_EQ(-100.0f, agl.m());
 }
@@ -186,7 +186,7 @@ TEST(MSL, Zero) {
   agl.m(0.0f);
   types::Altitude alt;
   alt.m(0.0f);
-  types::Altitude msl = airdata::GetMSL(agl, alt);
+  types::Altitude msl = airdata::CalcMSL(agl, alt);
 
   EXPECT_FLOAT_EQ(0.0f, msl.m());
 }
@@ -196,7 +196,7 @@ TEST(MSL, Positive) {
   agl.m(500.0f);
   types::Altitude alt;
   alt.m(500.0f);
-  types::Altitude msl = airdata::GetMSL(agl, alt);
+  types::Altitude msl = airdata::CalcMSL(agl, alt);
 
   EXPECT_FLOAT_EQ(1000.0f, msl.m());
 }
@@ -206,7 +206,7 @@ TEST(MSL, Mixed) {
   agl.m(500.0f);
   types::Altitude alt;
   alt.m(-500.0f);
-  types::Altitude msl = airdata::GetMSL(agl, alt);
+  types::Altitude msl = airdata::CalcMSL(agl, alt);
 
   EXPECT_FLOAT_EQ(0.0f, msl.m());
 }
@@ -217,7 +217,7 @@ TEST(DensityAltitude, Zero) {
   stpress.pa(0.0f);
   types::Temperature temp;
   temp.c(0.0f);
-  types::Altitude da = airdata::GetDensityAltitude(stpress, temp);
+  types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
 
   EXPECT_NEAR(44330.7692f, da.m(), 0.01f);
 }
@@ -227,7 +227,7 @@ TEST(DensityAltitude, Negative) {
   stpress.pa(-100.0f);
   types::Temperature temp;
   temp.c(-10.0f);
-  types::Altitude da = airdata::GetDensityAltitude(stpress, temp);
+  types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
 
   EXPECT_NEAR(44330.7692f, da.m(), 0.01f);
 }
@@ -237,7 +237,7 @@ TEST(DensityAltitude, Positive) {
   stpress.pa(93194.0f);
   types::Temperature temp;
   temp.c(10.46f);
-  types::Altitude da = airdata::GetDensityAltitude(stpress, temp);
+  types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
 
   EXPECT_NEAR(700.3124f, da.m(), 0.01f);
 }
@@ -247,75 +247,79 @@ TEST(DensityAltitude, SeaLevel) {
   stpress.pa(101325.0f);
   types::Temperature temp;
   temp.c(15.0f);
-  types::Altitude da = airdata::GetDensityAltitude(stpress, temp);
+  types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
 
   EXPECT_FLOAT_EQ(0.0f, da.m());
 }
 
 /* Test Outside Air Temperature zero input */
-TEST(EstimateOAT, Zero) {
+TEST(OAT, Zero) {
   types::Temperature temp;
   temp.c(0.0f);
   types::Altitude alt;
   alt.m(0.0f);
-  types::Temperature eoat = airdata::EstimateOAT(temp, alt);
+  types::Temperature eoat = airdata::CalcOAT(temp, alt);
 
   EXPECT_FLOAT_EQ(0.0f, eoat.c());
 }
 /* Test Outside Air Temperature negative input */
-TEST(EstimateOAT, Negative) {
+TEST(OAT, Negative) {
   types::Temperature temp;
   temp.c(-10.0f);
   types::Altitude alt;
   alt.m(-100.0f);
-  types::Temperature eoat = airdata::EstimateOAT(temp, alt);
+  types::Temperature eoat = airdata::CalcOAT(temp, alt);
 
   EXPECT_NEAR(-9.35f, eoat.c(), 0.01f);
 }
 /* Test Outside Air Temperature positive input */
-TEST(EstimateOAT, Positive) {
+TEST(OAT, Positive) {
   types::Temperature temp;
   temp.c(15.0f);
   types::Altitude alt;
   alt.m(500.0f);
-  types::Temperature eoat = airdata::EstimateOAT(temp, alt);
+  types::Temperature eoat = airdata::CalcOAT(temp, alt);
 
   EXPECT_NEAR(11.75f, eoat.c(), 0.01f);
 }
 
-/* Test Get Density zero input */
-TEST(GetDensity, Zero) {
+/* Test Density zero input */
+TEST(Density, Zero) {
   types::StaticPressure stpress;
   stpress.pa(0.0f);
   types::Temperature temp;
   temp.c(0.0f);
+  types::Density density = airdata::CalcDensity(stpress, temp);
 
-  EXPECT_FLOAT_EQ(0.0f, airdata::GetDensity_kgm3(stpress, temp));
+  EXPECT_FLOAT_EQ(0.0f, density.kgpm3());
 }
-/* Test Get Density negative input */
-TEST(GetDensity, Negative) {
+/* Test Density negative input */
+TEST(Density, Negative) {
   types::StaticPressure stpress;
   stpress.pa(-10.0f);
   types::Temperature temp;
   temp.c(-10.0f);
+  types::Density density = airdata::CalcDensity(stpress, temp);
 
-  EXPECT_FLOAT_EQ(0.0f, airdata::GetDensity_kgm3(stpress, temp));
+  EXPECT_FLOAT_EQ(0.0f, density.kgpm3());
 }
-/* Test Get Density positive input */
-TEST(GetDensity, Positive) {
+/* Test Density positive input */
+TEST(Density, Positive) {
   types::StaticPressure stpress;
   stpress.pa(79501.0f);
   types::Temperature temp;
   temp.c(2.01f);
+  types::Density density = airdata::CalcDensity(stpress, temp);
 
-  EXPECT_NEAR(1.0066, airdata::GetDensity_kgm3(stpress, temp), 0.01f);
+  EXPECT_NEAR(1.0066, density.kgpm3(), 0.01f);
 }
-/* Test Get Density sea level input */
-TEST(GetDensity, SeaLevel) {
+/* Test Density sea level input */
+TEST(Density, SeaLevel) {
   types::StaticPressure stpress;
   stpress.pa(101325.0f);
   types::Temperature temp;
   temp.c(15.0f);
+  types::Density density = airdata::CalcDensity(stpress, temp);
 
-  EXPECT_NEAR(1.2250, airdata::GetDensity_kgm3(stpress, temp), 0.01f);
+  EXPECT_NEAR(1.2250, density.kgpm3(), 0.01f);
 }
