@@ -27,8 +27,7 @@ static constexpr float G_mps2_ = 9.80665f;
 
 types::Speed CalcIas(const types::DiffPressure &p) {
   types::Speed ias;
-  types::DiffPressure dpress;
-  dpress = p;
+  types::DiffPressure dpress = p;
   if (dpress.pa() < 0.0f) {
     dpress.pa(0.0f);
   }
@@ -40,10 +39,8 @@ types::Speed CalcIas(const types::DiffPressure &p) {
 
 types::Speed CalcTas(const types::Speed &a, const types::Temperature &t) {
   types::Speed tas;
-  types::Speed speed;
-  speed = a;
-  types::Temperature temp;
-  temp = t;
+  types::Speed speed = a;
+  types::Temperature temp = t;
   if (speed.mps() < 0.0f) {
     speed.mps(0.0f);
   }
@@ -54,8 +51,7 @@ types::Speed CalcTas(const types::Speed &a, const types::Temperature &t) {
 
 types::Altitude CalcPressureAltitude(const types::StaticPressure &p) {
   types::Altitude pa;
-  types::StaticPressure stpress;
-  stpress = p;
+  types::StaticPressure stpress = p;
   if (stpress.pa() < 0.0f) {
     stpress.pa(0.0f);
   }
@@ -68,10 +64,8 @@ types::Altitude CalcPressureAltitude(const types::StaticPressure &p) {
 types::Altitude CalcAGL(const types::StaticPressure &p,
                           const types::Altitude &c) {
   types::Altitude AGL;
-  types::StaticPressure stpress;
-  stpress = p;
-  types::Altitude alt;
-  alt = c;
+  types::StaticPressure stpress = p;
+  types::Altitude alt = c;
   types::Altitude press_alt = CalcPressureAltitude(stpress);
   AGL.m(press_alt.m() - alt.m());
 
@@ -81,10 +75,8 @@ types::Altitude CalcAGL(const types::StaticPressure &p,
 types::Altitude CalcMSL(const types::Altitude &agl,
                           const types::Altitude &alt) {
   types::Altitude MSL;
-  types::Altitude AGL;
-  AGL = agl;
-  types::Altitude ALT;
-  ALT = alt;
+  types::Altitude AGL = agl;
+  types::Altitude ALT = alt;
   MSL.m(AGL.m() + ALT.m());
 
   return MSL;
@@ -93,10 +85,8 @@ types::Altitude CalcMSL(const types::Altitude &agl,
 types::Altitude CalcDensityAltitude(const types::StaticPressure &p,
                                     const types::Temperature &t) {
   types::Altitude da;
-  types::StaticPressure stpress;
-  stpress = p;
-  types::Temperature temp;
-  temp = t;
+  types::StaticPressure stpress = p;
+  types::Temperature temp = t;
   if (stpress.pa() < 0.0f) {
     stpress.pa(0.0f);
   }
@@ -109,10 +99,8 @@ types::Altitude CalcDensityAltitude(const types::StaticPressure &p,
 types::Temperature CalcOAT(const types::Temperature &t,
                             const types::Altitude &h) {
   types::Temperature eoat;
-  types::Temperature temp;
-  temp = t;
-  types::Altitude alt;
-  alt = h;
+  types::Temperature temp = t;
+  types::Altitude alt = h;
   eoat.k(temp.k()-L_kpm_*alt.m());
 
   return eoat;
@@ -121,10 +109,8 @@ types::Temperature CalcOAT(const types::Temperature &t,
 types::Density CalcDensity(const types::StaticPressure &p,
                         const types::Temperature &t) {
   types::Density density;
-  types::StaticPressure stpress;
-  stpress = p;
-  types::Temperature temp;
-  temp = t;
+  types::StaticPressure stpress = p;
+  types::Temperature temp = t;
   if (stpress.pa() < 0.0f) {
     stpress.pa(0.0f);
   }
