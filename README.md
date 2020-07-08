@@ -27,44 +27,51 @@ This library is within the namespace *airdata*.
 
 ## Methods
 
-**float GetIas_ms(float qc_pa)** Returns indicated airspeed (m/s) given differential pressure (Pa)
+**types::Speed CalcIas(const types::DiffPressure &p)** Returns indicated airspeed given differential pressure
 ```C++
-std::cout << "IAS (m/s): " << airdata::GetIas_ms(qc_pa) << std::endl;  // 28.5457
+types::Speed ias = airdata::CalcIas(dpress);
+std::cout << "IAS (m/s): " << ias.mps() << std::endl;  // 28.5457
 ```
 
-**float GetTas_ms(float AS_ms, float T_C)** Returns true airspeed (m/s) given airspeed (m/s) and temperature (C) 
+**types::Speed CalcTas(const types::Speed &a, const types::Temperature &t)** Returns true airspeed given airspeed and temperature
 ``` C++
-std::cout << "TAS (m/s): " << airdata::GetTas_ms(AS_ms, T_C) << std::endl;  // 30
+types::Speed tas = airdata::CalcTas(speed, temp);
+std::cout << "TAS (m/s): " << tas.mps() << std::endl;  // 30
 ```
 
-**float GetPressureAltitude_m(float p_pa)** Returns pressure altitue (m) given static pressure (Pa)
+**types::Altitude CalcPressureAltitude(const types::StaticPressure &p)** Returns pressure altitue given static pressure
 ``` C++
-std::cout << "Pressure Altitude (m): " << airdata::GetPressureAltitude_m(p_pa) << std::endl;  // 0
+types::Altitude pa = airdata::CalcPressureAltitude(stpress);
+std::cout << "Pressure Altitude (m): " << pa.m() << std::endl;  // 0
 ```
 
-**float GetAGL_m(float p_pa, float c_m)** Returns altitude Above Ground Level (AGL) (m) given static pressure (pa) and a bias (m)
+**types::Altitude CalcAGL(const types::StaticPressure &p, const types::Altitude &c)** Returns altitude Above Ground Level (AGL) given static pressure and a bias
 ``` C++
-std::cout << "AGL (m): " << airdata::GetAGL_m(p_pa, c_m) << std::endl;  // -100
+types::Altitude AGL = airdata::CalcAGL(stpress, bias);
+std::cout << "AGL (m): " << AGL.m() << std::endl;  // -100
   
 ```
 
-**float GetMSL_m(float H_m, float h_m)** Returns altitude above Mean Sea Level (MSL) (m) given AGL (m) and starting altitude (m) 
+**types::Altitude CalcMSL(const types::Altitude &agl, const types::Altitude &alt)** Returns altitude above Mean Sea Level (MSL) given AGL and starting altitude
 ``` C++
-std::cout << "MSL (m): " << airdata::GetMSL_m(H_m, h_m) << std::endl;  // 1000
+types::Altitude msl = airdata::CalcMSL(agl, alt);
+std::cout << "MSL (m): " << msl.m() << std::endl;  // 1000
 ```
 
-**float GetDensityAltitude_m(float p_pa, float T_C)** Returns density altitude (m) given static pressure (pa) and temperature (C) 
+**types::Altitude CalcDensityAltitude(const types::StaticPressure &p, const types::Temperature &t)** Returns density altitude given static pressure and temperature
 ``` C++
-std::cout << "Density Altitude (m): " <<airdata::GetDensityAltitude_m(p_pa, T_C) << std::endl;  // 0
+types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
+std::cout << "Density Altitude (m): " << da.m() << std::endl;  // 0
 ```
 
-**float EstimateOAT_C(float T_C, float h_m)** Returns estimated outside air temperature (C) as a fuction of altitude (m) 
+**types::Temperature CalcOAT(const types::Temperature &t, const types::Altitude &h)** Returns estimated outside air temperature as a fuction of altitude
 ``` C++
-std::cout << "Estimated OAT (C): " << airdata::EstimateOAT_C(T_C, h_m) << std::endl;  
-// 11.75
+types::Temperature eoat = airdata::CalcOAT(temp, alt);
+std::cout << "OAT (C): " << eoat.c() << std::endl;  // 11.75
 ```
  
-**float GetDensity_kgm3(float p_pa, float T_C)** Returns air density (kg-m^3) given temperature (C) and pressure (pa) 
+**types::Density CalcDensity(const types::StaticPressure &p, const types::Temperature &t)** Returns air density given temperature and pressure
 ``` C++
-std::cout << "Air Density (kg-m^3): " << airdata::GetDensity_kgm3(p_pa, T_C) << std::endl;  // 1.225
+types::Density density = airdata::CalcDensity(stpress, temp);
+st  d::cout << "Air Density (kg-m^3): " << density.kgpm3() << std::endl;// 1.225
 ```

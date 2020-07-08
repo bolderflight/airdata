@@ -9,48 +9,54 @@
 #define INCLUDE_AIRDATA_AIRDATA_H_
 
 #include <stdlib.h>
+#include "types/types.h"
 
 namespace airdata {
 
 /* 
-* Returns indicated airspeed (m/s) given differential pressure (Pa) 
+* Returns indicated airspeed given differential pressure
 */
-float GetIas_ms(float qc_pa);
+types::Speed CalcIas(const types::DiffPressure &p);
 
 /* 
-* Returns true airspeed (m/s) given airspeed (m/s) and temperature (C) 
+* Returns true airspeed given airspeed and temperature 
 */
-float GetTas_ms(float AS_ms, float T_C);
+types::Speed CalcTas(const types::Speed &a, const types::Temperature &t);
 
 /*
-* Returns pressure altitue (m) given static pressure (Pa)
+* Returns pressure altitue given static pressure
 */
-float GetPressureAltitude_m(float p_pa);
+types::Altitude CalcPressureAltitude(const types::StaticPressure &p);
 
 /*
-* Returns altitude Above Ground Level (AGL) (m) given static pressure (pa) and a bias (m)
+* Returns altitude Above Ground Level (AGL) given static pressure and a bias 
+* altitude
 */
-float GetAGL_m(float p_pa, float c_m);
+types::Altitude CalcAGL(const types::StaticPressure &p,
+                        const types::Altitude &c);
 
 /* 
-* Returns altitude above Mean Sea Level (MSL) (m) given AGL (m) and starting altitude (m) 
+* Returns altitude above Mean Sea Level (MSL) given AGL and starting altitude 
 */
-float GetMSL_m(float H_m, float h_m);
+types::Altitude CalcMSL(const types::Altitude &agl, const types::Altitude &alt);
 
 /*
-* Returns density altitude (m) given static pressure (pa) and temperature (C) 
+* Returns density altitude given static pressure temperature
 */
-float GetDensityAltitude_m(float p_pa, float T_C);
+types::Altitude CalcDensityAltitude(const types::StaticPressure &p,
+                                    const types::Temperature &t);
 
 /*
-* Returns estimated outside air temperature (C) as a fuction of altitude (m) 
+* Returns estimated outside air temperature as a fuction of altitude
 */
-float EstimateOAT_C(float T_C, float h_m);
+types::Temperature CalcOAT(const types::Temperature &t,
+                            const types::Altitude &h);
 
 /* 
-* Returns air density (kg-m^3) given temperature (C) and pressure (pa) 
+* Returns air density (kg-m^3) given temperature and pressure
 */
-float GetDensity_kgm3(float p_pa, float T_C);
+types::Density CalcDensity(const types::StaticPressure &p,
+                            const types::Temperature &t);
 
 }  // namespace airdata
 

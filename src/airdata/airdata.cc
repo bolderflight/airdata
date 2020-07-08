@@ -7,65 +7,116 @@
 
 #include "airdata/airdata.h"
 #include <math.h>
+#include "types/types.h"
 
 namespace airdata {
 
 namespace {
-static constexpr float A0 = 340.29f;  // standard sea level speed of sound, m/s
-static constexpr float P0 = 101325.0f;  // standard sea level pressure, Pa
-static constexpr float T0 = 288.15f;    // standard sea level temperature, K
-static constexpr float L = 0.0065f;     // standard lapse rate, K/m
-static constexpr float R = 8.31432f;    // gas constant, J/kg-mol
-static constexpr float M = 0.0289644f;  // molecular mass dry air, kg/mol
-static constexpr float G = 9.80665f;    // acceleration due to gravity, m/s/s
-}  // anonymous
+static constexpr float A0_mps_ = 340.29f;
+  // standard sea level speed of sound, m/s
+static constexpr float P0_pa_ = 101325.0f;  // standard sea level pressure, Pa
+static constexpr float T0_k_ = 288.15f;    // standard sea level temperature, K
+static constexpr float L_kpm_ = 0.0065f;     // standard lapse rate, K/m
+static constexpr float R_jpkgmol_ = 8.31432f;    // gas constant, J/kg-mol
+static constexpr float M_kgpmol_ = 0.0289644f;
+  // molecular mass dry air, kg/mol
+static constexpr float G_mps2_ = 9.80665f;
+  // acceleration due to gravity, m/s^2
 
-float GetIas_ms(float qc_pa) {
-  if (qc_pa < 0.0f) {
-    qc_pa = 0.0f;
+}  // anonymous namespace
+
+types::Speed CalcIas(const types::DiffPressure &p) {
+  types::Speed ias;
+  types::DiffPressure dpress = p;
+  if (dpress.pa() < 0.0f) {
+    dpress.pa(0.0f);
   }
-  return A0 * sqrtf(5.0f * (powf((qc_pa / P0 + 1.0f), (2.0f / 7.0f)) - 1.0f));
+  ias.mps(A0_mps_ * sqrtf(5.0f *
+    (powf((dpress.pa() / P0_pa_ + 1.0f), (2.0f / 7.0f)) - 1.0f)));
+
+  return ias;
 }
 
-float GetTas_ms(float AS_ms, float T_C) {
-  if (AS_ms < 0.0f) {
-    AS_ms = 0.0f;
+types::Speed CalcTas(const types::Speed &a, const types::Temperature &t) {
+  types::Speed tas;
+  types::Speed speed = a;
+  types::Temperature temp = t;
+  if (speed.mps() < 0.0f) {
+    speed.mps(0.0f);
   }
-  return AS_ms * sqrtf((T_C+273.15f)/T0);
+  tas.mps(speed.mps() * sqrtf((temp.k()/T0_k_)));
+
+  return tas;
 }
 
-float GetPressureAltitude_m(float p_pa) {
-  if (p_pa < 0.0f) {
-    p_pa = 0.0f;
+types::Altitude CalcPressureAltitude(const types::StaticPressure &p) {
+  types::Altitude pa;
+  types::StaticPressure stpress = p;
+  if (stpress.pa() < 0.0f) {
+    stpress.pa(0.0f);
   }
-  return (T0/L)*(1.0f - powf((p_pa/P0), ((L*R)/(M*G))));
+  pa.m((T0_k_/L_kpm_)*(1.0f - powf((stpress.pa()/P0_pa_),
+                                  ((L_kpm_*R_jpkgmol_)/(M_kgpmol_*G_mps2_)))));
+
+  return pa;
 }
 
-float GetAGL_m(float p_pa, float c_m) {
-  return GetPressureAltitude_m(p_pa) - c_m;
+types::Altitude CalcAGL(const types::StaticPressure &p,
+                          const types::Altitude &c) {
+  types::Altitude AGL;
+  types::StaticPressure stpress = p;
+  types::Altitude alt = c;
+  types::Altitude press_alt = CalcPressureAltitude(stpress);
+  AGL.m(press_alt.m() - alt.m());
+
+  return AGL;
 }
 
-float GetMSL_m(float H_m, float h_m) {
-  return H_m + h_m;
+types::Altitude CalcMSL(const types::Altitude &agl,
+                          const types::Altitude &alt) {
+  types::Altitude MSL;
+  types::Altitude AGL = agl;
+  types::Altitude ALT = alt;
+  MSL.m(AGL.m() + ALT.m());
+
+  return MSL;
 }
 
-float GetDensityAltitude_m(float p_pa, float T_C) {
-  if (p_pa < 0.0f) {
-    p_pa = 0.0f;
+types::Altitude CalcDensityAltitude(const types::StaticPressure &p,
+                                    const types::Temperature &t) {
+  types::Altitude da;
+  types::StaticPressure stpress = p;
+  types::Temperature temp = t;
+  if (stpress.pa() < 0.0f) {
+    stpress.pa(0.0f);
   }
-  return (T0/L)*(1.0f - powf(((p_pa/P0)*(T0/(T_C+273.15f))),
-    ((L*R)/(M*G - L*R))));
+  da.m((T0_k_/L_kpm_)*(1.0f - powf(((stpress.pa()/P0_pa_)*(T0_k_/(temp.k()))),
+    ((L_kpm_*R_jpkgmol_)/(M_kgpmol_*G_mps2_ - L_kpm_*R_jpkgmol_)))));
+
+  return da;
 }
 
-float EstimateOAT_C(float T_C, float h_m) {
-  return ((T_C+273.15) - L*h_m) - 273.15;
+types::Temperature CalcOAT(const types::Temperature &t,
+                            const types::Altitude &h) {
+  types::Temperature eoat;
+  types::Temperature temp = t;
+  types::Altitude alt = h;
+  eoat.k(temp.k()-L_kpm_*alt.m());
+
+  return eoat;
 }
 
-float GetDensity_kgm3(float p_pa, float T_C) {
-  if (p_pa < 0.0f) {
-    p_pa = 0.0f;
+types::Density CalcDensity(const types::StaticPressure &p,
+                        const types::Temperature &t) {
+  types::Density density;
+  types::StaticPressure stpress = p;
+  types::Temperature temp = t;
+  if (stpress.pa() < 0.0f) {
+    stpress.pa(0.0f);
   }
-  return (M*p_pa)/(R*(T_C+273.15f));
+  density.kgpm3((M_kgpmol_*stpress.pa())/(R_jpkgmol_*(temp.k())));
+
+  return density;
 }
 
 }  // namespace airdata

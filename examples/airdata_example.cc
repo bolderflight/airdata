@@ -7,42 +7,65 @@
 
 #include "airdata/airdata.h"
 #include <iostream>
+#include "types/types.h"
 
 int main() {
-  float qc_pa = 500.0f;
-  float AS_ms = 30.0f;
-  float T_C = 15.0f;
-  float p_pa = 101325.0f;
-  float c_m = 100.0f;
-  float H_m = 500.0f;
-  float h_m = 500.0f;
+  types::DiffPressure dpress;
+  dpress.pa(500.0f);
+
+  types::Speed speed;
+  speed.mps(30.0f);
+
+  types::Temperature temp;
+  temp.c(15.0f);
+
+  types::StaticPressure stpress;
+  stpress.pa(101325.0f);
+
+  types::Altitude bias;
+  bias.m(100.0f);
+
+  types::Altitude agl;
+  agl.m(500.0f);
+
+  types::Altitude alt;
+  alt.m(500.0f);
 
   std::cout << "--- Inputs ---" << std::endl;
-  std::cout << "Differential Pressure (pa): " << qc_pa << std::endl;
-  std::cout << "Airspeed (m/s): " << AS_ms << std::endl;
-  std::cout << "Temperature (C): " << T_C << std::endl;
-  std::cout << "Static Pressure (pa): " << p_pa << std::endl;
-  std::cout << "Bias (m): " << c_m << std::endl;
-  std::cout << "Given AGL (m): " << H_m << std::endl;
-  std::cout << "Starting Altitude (m): " << h_m << std::endl;
+  std::cout << "Differential Pressure (pa): " << dpress.pa() << std::endl;
+  std::cout << "Airspeed (m/s): " << speed.mps() << std::endl;
+  std::cout << "Temperature (C): " << temp.c() << std::endl;
+  std::cout << "Static Pressure (pa): " << stpress.pa() << std::endl;
+  std::cout << "Bias (m): " << bias.m() << std::endl;
+  std::cout << "Given AGL (m): " << agl.m() << std::endl;
+  std::cout << "Starting Altitude (m): " << alt.m() << std::endl;
 
   std::cout << "--- Functions ---" << std::endl;
-  std::cout << "IAS (m/s): " << airdata::GetIas_ms(qc_pa) << std::endl;
-    // 28.5457
-  std::cout << "TAS (m/s): " << airdata::GetTas_ms(AS_ms, T_C) << std::endl;
-    // 30
-  std::cout << "Pressure Altitude (m): " <<
-    airdata::GetPressureAltitude_m(p_pa) << std::endl;  // 0
-  std::cout << "AGL (m): " << airdata::GetAGL_m(p_pa, c_m) << std::endl;
-    // -100
-  std::cout << "MSL (m): " << airdata::GetMSL_m(H_m, h_m) << std::endl;
-    // 1000
-  std::cout << "Density Altitude (m): " <<
-    airdata::GetDensityAltitude_m(p_pa, T_C) << std::endl;  // 0
-  std::cout << "Estimated OAT (C): " << airdata::EstimateOAT_C(T_C, h_m) <<
-    std::endl;  // 11.75
-  std::cout << "Air Density (kg-m^3): " <<
-    airdata::GetDensity_kgm3(p_pa, T_C) << std::endl;  // 1.225
+
+  types::Speed ias = airdata::CalcIas(dpress);
+  std::cout << "IAS (m/s): " << ias.mps() << std::endl;  // 28.5457
+
+  types::Speed tas = airdata::CalcTas(speed, temp);
+  std::cout << "TAS (m/s): " << tas.mps() << std::endl;  // 30
+
+  types::Altitude pa = airdata::CalcPressureAltitude(stpress);
+  std::cout << "Pressure Altitude (m): " << pa.m() << std::endl;  // 0
+
+  types::Altitude AGL = airdata::CalcAGL(stpress, bias);
+  std::cout << "AGL (m): " << AGL.m() << std::endl;  // -100
+
+  types::Altitude msl = airdata::CalcMSL(agl, alt);
+  std::cout << "MSL (m): " << msl.m() << std::endl;  // 1000
+
+  types::Altitude da = airdata::CalcDensityAltitude(stpress, temp);
+  std::cout << "Density Altitude (m): " << da.m() << std::endl;  // 0
+
+  types::Temperature eoat = airdata::CalcOAT(temp, alt);
+  std::cout << "OAT (C): " << eoat.c() << std::endl;  // 11.75
+
+  types::Density density = airdata::CalcDensity(stpress, temp);
+  std::cout << "Air Density (kg-m^3): " << density.kgpm3() << std::endl;
+        // 1.225
 
   return 0;
 }
