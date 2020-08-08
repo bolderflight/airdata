@@ -12,13 +12,13 @@
 int main() {
   types::Pressure<float> dpress;
   dpress.pa(500.0f);
-  types::Speed<float> speed;
+  types::LinVel<float> speed;
   speed.mps(30.0f);
   types::Temperature<float> temp;
   temp.c(15.0f);
   types::Pressure<float> stpress;
   stpress.pa(101325.0f);
-  types::Altitude<float> alt;
+  types::LinPos<float> alt;
   alt.m(500.0f);
 
   std::cout << "--- Inputs ---" << std::endl;
@@ -29,13 +29,13 @@ int main() {
   std::cout << "Altitude (m) AGL: " << alt.m() << std::endl;
 
   std::cout << "--- Functions ---" << std::endl;
-  types::Speed<float> ias = airdata::Ias(dpress);
+  types::LinVel<float> ias = airdata::Ias(dpress);
   std::cout << "IAS (m/s): " << ias.mps() << std::endl;  // 28.5457
-  types::Speed<float> tas = airdata::Tas(speed, temp);
+  types::LinVel<float> tas = airdata::Tas(speed, temp);
   std::cout << "TAS (m/s): " << tas.mps() << std::endl;  // 30
-  types::Altitude<float> pa = airdata::PressureAltitude(stpress);
+  types::LinPos<float> pa = airdata::PressureAltitude(stpress);
   std::cout << "Pressure Altitude (m): " << pa.m() << std::endl;  // 0
-  types::Altitude<float> da = airdata::DensityAltitude(stpress, temp);
+  types::LinPos<float> da = airdata::DensityAltitude(stpress, temp);
   std::cout << "Density Altitude (m): " << da.m() << std::endl;  // 0
   types::Temperature<float> eoat = airdata::Oat(temp, alt);
   std::cout << "OAT (C): " << eoat.c() << std::endl;  // 11.75

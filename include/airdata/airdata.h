@@ -15,8 +15,8 @@
 namespace airdata {
 /* Computes indicated airspeed from differential pressure */
 template<typename T>
-types::Speed<T> Ias(const types::Pressure<T> &p) {
-  types::Speed<T> ias;
+types::LinVel<T> Ias(const types::Pressure<T> &p) {
+  types::LinVel<T> ias;
   if (p.pa() < 0) {
     ias.mps(0);
     return ias;
@@ -26,8 +26,8 @@ types::Speed<T> Ias(const types::Pressure<T> &p) {
 }
 /* Computes equivalent airspeed given IAS and static pressure */
 template<typename T>
-types::Speed<T> Eas(const types::Speed<T> &ias, const types::Pressure<T> &p) {
-  types::Speed<T> eas;
+types::LinVel<T> Eas(const types::LinVel<T> &ias, const types::Pressure<T> &p) {
+  types::LinVel<T> eas;
   if ((ias.mps() < 0) || (p.pa() < 0)) {
     eas.mps(0);
     return eas;
@@ -36,8 +36,8 @@ types::Speed<T> Eas(const types::Speed<T> &ias, const types::Pressure<T> &p) {
 }
 /* Computes true airspeed given EAS and temperature */
 template<typename T>
-types::Speed<T> Tas(const types::Speed<T> &eas, const types::Temperature<T> &t) {
-  types::Speed<T> tas;
+types::LinVel<T> Tas(const types::LinVel<T> &eas, const types::Temperature<T> &t) {
+  types::LinVel<T> tas;
   if ((eas.mps() < 0) || (t.k() < 0)) {
     tas.mps(0);
     return tas;
@@ -47,8 +47,8 @@ types::Speed<T> Tas(const types::Speed<T> &eas, const types::Temperature<T> &t) 
 }
 /* Pressure altitude from static pressure */
 template<typename T>
-types::Altitude<T> PressureAltitude(const types::Pressure<T> &p) {
-  types::Altitude<T> pa;
+types::LinPos<T> PressureAltitude(const types::Pressure<T> &p) {
+  types::LinPos<T> pa;
   types::Pressure<T> p_sat(p);
   if (p_sat.pa() < 0) {
     p_sat.pa(0);
@@ -58,8 +58,8 @@ types::Altitude<T> PressureAltitude(const types::Pressure<T> &p) {
 }
 /* Density altitude given static pressure temperature */
 template<typename T>
-types::Altitude<T> DensityAltitude(const types::Pressure<T> &p, const types::Temperature<T> &t) {
-  types::Altitude<T> da;
+types::LinPos<T> DensityAltitude(const types::Pressure<T> &p, const types::Temperature<T> &t) {
+  types::LinPos<T> da;
   types::Pressure<T> p_sat(p);
   types::Temperature<T> t_sat(t);
   if (p_sat.pa() < 0) {
@@ -73,7 +73,7 @@ types::Altitude<T> DensityAltitude(const types::Pressure<T> &p, const types::Tem
 }
 /* Estimated outside air temperature as a fuction of AGL altitude using lapse rate */
 template<typename T>
-types::Temperature<T> Oat(const types::Temperature<T> &t, const types::Altitude<T> &agl) {
+types::Temperature<T> Oat(const types::Temperature<T> &t, const types::LinPos<T> &agl) {
   types::Temperature<T> oat;
   oat.c(t.c() - constants::LAPSE_RATE_KPM<T> * agl.m());
   return oat;
