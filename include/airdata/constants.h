@@ -24,7 +24,6 @@ template<typename T>
 static constexpr T GAS_CONSTANT_JPKGMOL = static_cast<T>(8.31446261815324);
 template<typename T>
 static constexpr T MOLECULAR_MASS_AIR_KGPMOL = static_cast<T>(0.0289644);
-
 }  // namespace constants
 }  // namespace airdata
 

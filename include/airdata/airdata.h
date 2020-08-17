@@ -2,98 +2,80 @@
 * Brian R Taylor
 * brian.taylor@bolderflight.com
 * 
-* Copyright (c) 2019 Bolder Flight Systems
+* Copyright (c) 2020 Bolder Flight Systems
 */
 
 #ifndef INCLUDE_AIRDATA_AIRDATA_H_
 #define INCLUDE_AIRDATA_AIRDATA_H_
 
-#include "types/types.h"
 #include "airdata/constants.h"
 #include "global_defs/global_defs.h"
+#include <cmath>
 
 namespace airdata {
-/* Computes indicated airspeed from differential pressure */
+/* Computes indicated airspeed (m/s) from differential pressure (Pa) */
 template<typename T>
-types::LinVel<T> Ias(const types::Pressure<T> &p) {
-  types::LinVel<T> ias;
-  if (p.pa() < 0) {
-    ias.mps(0);
-    return ias;
-  }
-  ias.mps(constants::STD_SEA_LEVEL_SPEED_OF_SOUND_MPS<T> * std::sqrt(static_cast<T>(5) * (std::pow(p.pa() / constants::STD_SEA_LEVEL_PRESSURE_PA<T> + static_cast<T>(1), static_cast<T>(2) / static_cast<T>(7)) - static_cast<T>(1))));
-  return ias;
+T Ias(const T &p) {
+  if (p < static_cast<T>(0)) {return static_cast<T>(0);}
+  return constants::STD_SEA_LEVEL_SPEED_OF_SOUND_MPS<T> * std::sqrt(static_cast<T>(5) * (std::pow(p / constants::STD_SEA_LEVEL_PRESSURE_PA<T> + static_cast<T>(1), static_cast<T>(2) / static_cast<T>(7)) - static_cast<T>(1)));
 }
-/* Computes equivalent airspeed given IAS and static pressure */
+/* Computes equivalent airspeed (m/s) given IAS (m/s) and static pressure (Pa) */
 template<typename T>
-types::LinVel<T> Eas(const types::LinVel<T> &ias, const types::Pressure<T> &p) {
-  types::LinVel<T> eas;
-  if ((ias.mps() < 0) || (p.pa() < 0)) {
-    eas.mps(0);
-    return eas;
+T Eas(const T &ias, const T &p) {
+  if ((ias < static_cast<T>(0)) || (p < static_cast<T>(0))) {
+    return static_cast<T>(0);
   }
-  eas.mps(ias.mps() * std::sqrt(p.pa() / constants::STD_SEA_LEVEL_PRESSURE_PA<T>));
+  return ias * std::sqrt(p / constants::STD_SEA_LEVEL_PRESSURE_PA<T>);
 }
-/* Computes true airspeed given EAS and temperature */
+/* Computes true airspeed (m/s) given EAS (m/s) and temperature (C) */
 template<typename T>
-types::LinVel<T> Tas(const types::LinVel<T> &eas, const types::Temperature<T> &t) {
-  types::LinVel<T> tas;
-  if ((eas.mps() < 0) || (t.k() < 0)) {
-    tas.mps(0);
-    return tas;
+T Tas(const T &eas, const T &t) {
+  /* Convert temperature to K */
+  T t_k = global::conversions::C_to_K<T>(t);
+  if ((eas < static_cast<T>(0)) || (t_k < static_cast<T>(0))) {
+    return static_cast<T>(0);
   }
-  tas.mps(eas.mps() * std::sqrt(t.k() / constants::STD_SEA_LEVEL_TEMPERATURE_K<T>));
-  return tas;
+  return eas * std::sqrt(t_k / constants::STD_SEA_LEVEL_TEMPERATURE_K<T>);
 }
-/* Pressure altitude from static pressure */
+/* Pressure altitude (m) from static pressure (Pa) */
 template<typename T>
-types::LinPos<T> PressureAltitude(const types::Pressure<T> &p) {
-  types::LinPos<T> pa;
-  types::Pressure<T> p_sat(p);
-  if (p_sat.pa() < 0) {
-    p_sat.pa(0);
+T PressureAltitude(const T &p) {
+  T p_sat = p;
+  if (p_sat < static_cast<T>(0)) {
+    p_sat = static_cast<T>(0);
   }
-  pa.m(constants::STD_SEA_LEVEL_TEMPERATURE_K<T> / constants::LAPSE_RATE_KPM<T> * (static_cast<T>(1) - std::pow(p_sat.pa() / constants::STD_SEA_LEVEL_PRESSURE_PA<T>, (constants::LAPSE_RATE_KPM<T> * constants::GAS_CONSTANT_JPKGMOL<T>) / (constants::MOLECULAR_MASS_AIR_KGPMOL<T> * global::constants::G_MPS2<T>))));
-  return pa;
+  return constants::STD_SEA_LEVEL_TEMPERATURE_K<T> / constants::LAPSE_RATE_KPM<T> * (static_cast<T>(1) - std::pow(p_sat / constants::STD_SEA_LEVEL_PRESSURE_PA<T>, (constants::LAPSE_RATE_KPM<T> * constants::GAS_CONSTANT_JPKGMOL<T>) / (constants::MOLECULAR_MASS_AIR_KGPMOL<T> * global::constants::G_MPS2<T>)));
 }
-/* Density altitude given static pressure temperature */
+/* Density altitude (m) given static pressure (Pa) and temperature (C) */
 template<typename T>
-types::LinPos<T> DensityAltitude(const types::Pressure<T> &p, const types::Temperature<T> &t) {
-  types::LinPos<T> da;
-  types::Pressure<T> p_sat(p);
-  types::Temperature<T> t_sat(t);
-  if (p_sat.pa() < 0) {
-    p_sat.pa(0);
+T DensityAltitude(const T &p, const T &t) {
+  T p_sat = p;;
+  T t_sat = global::conversions::C_to_K(t);
+  if (p_sat < static_cast<T>(0)) {
+    p_sat = static_cast<T>(0);
   }
-  if (t_sat.k() < 1) {
-    t_sat.k(1);
+  if (t_sat < static_cast<T>(1)) {
+    t_sat = static_cast<T>(1);
   }
-  da.m(constants::STD_SEA_LEVEL_TEMPERATURE_K<T> / constants::LAPSE_RATE_KPM<T> * (static_cast<T>(1) - std::pow(p_sat.pa() / constants::STD_SEA_LEVEL_PRESSURE_PA<T> * constants::STD_SEA_LEVEL_TEMPERATURE_K<T> / t_sat.k(), (constants::LAPSE_RATE_KPM<T> * constants::GAS_CONSTANT_JPKGMOL<T>) / (constants::MOLECULAR_MASS_AIR_KGPMOL<T> * global::constants::G_MPS2<T> - constants::LAPSE_RATE_KPM<T> * constants::GAS_CONSTANT_JPKGMOL<T>))));
-  return da;
+  return constants::STD_SEA_LEVEL_TEMPERATURE_K<T> / constants::LAPSE_RATE_KPM<T> * (static_cast<T>(1) - std::pow(p_sat / constants::STD_SEA_LEVEL_PRESSURE_PA<T> * constants::STD_SEA_LEVEL_TEMPERATURE_K<T> / t_sat, (constants::LAPSE_RATE_KPM<T> * constants::GAS_CONSTANT_JPKGMOL<T>) / (constants::MOLECULAR_MASS_AIR_KGPMOL<T> * global::constants::G_MPS2<T> - constants::LAPSE_RATE_KPM<T> * constants::GAS_CONSTANT_JPKGMOL<T>)));
 }
-/* Estimated outside air temperature as a fuction of AGL altitude using lapse rate */
+/* Estimated outside air temperature (C) as a fuction of surface temperature (C) and AGL altitude (m) using lapse rate */
 template<typename T>
-types::Temperature<T> Oat(const types::Temperature<T> &t, const types::LinPos<T> &agl) {
-  types::Temperature<T> oat;
-  oat.c(t.c() - constants::LAPSE_RATE_KPM<T> * agl.m());
-  return oat;
+T Oat(const T &t, const T &agl) {
+  return t - constants::LAPSE_RATE_KPM<T> * agl;
 }
-/* Estimated air density from temperature and pressure */
+/* Estimated air density (kg/m^3) from temperature (C) and pressure (Pa) */
 template<typename T>
-types::Density<T> AirDensity(const types::Pressure<T> &p, const types::Temperature<T> &t) {
-  types::Density<T> air_density;
-  types::Temperature<T> t_sat(t);
-  if (p.pa() < 0) {
-    air_density.kgpm3(0);
-    return air_density;
+T AirDensity(const T &p, const T &t) {
+  T t_sat = global::conversions::C_to_K(t);
+  if (p < static_cast<T>(0)) {
+    return static_cast<T>(0);
   }
-  if (t_sat.k() < 1) {
-    t_sat.k(1);
+  if (t_sat < static_cast<T>(1)) {
+    t_sat = static_cast<T>(1);
   }
-  air_density.kgpm3(constants::MOLECULAR_MASS_AIR_KGPMOL<T> * p.pa() / (constants::GAS_CONSTANT_JPKGMOL<T> * t_sat.k()));
-  return air_density;
+  return constants::MOLECULAR_MASS_AIR_KGPMOL<T> * p / (constants::GAS_CONSTANT_JPKGMOL<T> * t_sat);
 }
-
 }  // namespace airdata
 
 #endif  // INCLUDE_AIRDATA_AIRDATA_H_

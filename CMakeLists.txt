@@ -5,7 +5,6 @@ project(Airdata
   DESCRIPTION "Airdata functions."
   LANGUAGES CXX
 )
-
 include(FetchContent)
 FetchContent_Declare(
 	types
@@ -17,19 +16,15 @@ FetchContent_Declare(
 	GIT_REPOSITORY git@gitlab.com:bolderflight/software/global_defs.git
 )
 FetchContent_MakeAvailable(global_defs)
-
 # Add the library target
 add_library(airdata INTERFACE)
-
-target_link_libraries(airdata 
+target_link_libraries(types
 	INTERFACE
 		types
 		global_defs
 )
-
 # Setup include directories 
 target_include_directories(airdata INTERFACE include/)
-
 # Example and unit testing if this project is built separately
 if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
 	# Add the example target
@@ -43,32 +38,33 @@ if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
 	target_link_libraries(airdata_example
 		PRIVATE 
 			airdata
+			types
 	)
-	# Fetch google test
-	include(FetchContent)
-	FetchContent_Declare(
-		googletest
-		GIT_REPOSITORY https://github.com/google/googletest.git
-		GIT_TAG 				release-1.10.0
-	)
-	FetchContent_MakeAvailable(googletest)
-	enable_testing()
-	include(GoogleTest)
-	# Add the test target
-	add_executable(airdata_test tests/airdata_test.cc)
-	# Add the includes
-	target_include_directories(airdata_test PUBLIC 
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-		$<INSTALL_INTERFACE:include>
-	)
-	# Link libraries to the test target
-	target_link_libraries(airdata_test
-		PRIVATE 
-			airdata
-			gtest_main 
-			gtest
-			gmock
-	)
-	# Discover unit tests
-	gtest_discover_tests(airdata_test)
+# 	# Fetch google test
+# 	include(FetchContent)
+# 	FetchContent_Declare(
+# 		googletest
+# 		GIT_REPOSITORY https://github.com/google/googletest.git
+# 		GIT_TAG 				release-1.10.0
+# 	)
+# 	FetchContent_MakeAvailable(googletest)
+# 	enable_testing()
+# 	include(GoogleTest)
+# 	# Add the test target
+# 	add_executable(airdata_test tests/airdata_test.cc)
+# 	# Add the includes
+# 	target_include_directories(airdata_test PUBLIC 
+# 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+# 		$<INSTALL_INTERFACE:include>
+# 	)
+# 	# Link libraries to the test target
+# 	target_link_libraries(airdata_test
+# 		PRIVATE 
+# 			airdata
+# 			gtest_main 
+# 			gtest
+# 			gmock
+# 	)
+# 	# Discover unit tests
+# 	gtest_discover_tests(airdata_test)
 endif()
