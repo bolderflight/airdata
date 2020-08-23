@@ -27,58 +27,51 @@ This library is within the namespace *airdata*.
 
 ## Methods
 
-**types::Speed Ias(const types::Pressure &p)** Returns indicated airspeed given differential pressure
+**float Ias_mps(float p)** Returns indicated airspeed (m/s) given differential pressure (Pa)
+
 ```C++
-types::Pressure<float> dpress;
-dpress.pa(500.0f);
-types::Speed<float> ias = airdata::Ias(dpress);
-std::cout << "IAS (m/s): " << ias.mps() << std::endl;  // 28.5457
+float ias = airdata::Ias_mps(500.0f);
+std::cout << "IAS (m/s): " << ias << std::endl;  // 28.5457
 ```
 
-**types::Speed Tas(const types::Speed &a, const types::Temperature &t)** Returns true airspeed given airspeed and temperature
-``` C++
-types::Speed<float> speed;
-speed.mps(30.0f);
-types::Temperature<float> temp;
-temp.c(15.0f);
-types::Speed<float> tas = airdata::Tas(speed, temp);
-std::cout << "TAS (m/s): " << tas.mps() << std::endl;  // 30
+**float Eas_mps(float ias, float p)** Returns equivalent airspeed (m/s) given indicated airspeed (m/s) and static pressure (Pa)
+
+```C++
+float eas = airdata::Eas_mps(ias, 90000.0f);
+std::cout << "EAS (m/s): " << eas << std::endl;  // 26.9032
 ```
 
-**types::Altitude PressureAltitude(const types::StaticPressure &p)** Returns pressure altitue given static pressure
+**float Tas_mps(float eas, float t)** Returns true airspeed (m/s) given equivalent airspeed (m/s) and temperature (C)
+
 ``` C++
-types::Pressure<float> stpress;
-stpress.pa(101325.0f);
-types::Altitude<float> pa = airdata::PressureAltitude(stpress);
-std::cout << "Pressure Altitude (m): " << pa.m() << std::endl;  // 0
+float tas = airdata::Tas_mps(eas, 17);
+std::cout << "TAS (m/s): " << tas << std::endl;  // 26.9964
 ```
 
-**types::Altitude DensityAltitude(const types::StaticPressure &p, const types::Temperature &t)** Returns density altitude given static pressure and temperature
+**float PressureAltitude_m(float p)** Returns pressure altitue (m) given static pressure (Pa)
+
 ``` C++
-types::Pressure<float> stpress;
-stpress.pa(101325.0f);
-types::Temperature<float> temp;
-temp.c(15.0f);
-types::Altitude<float> da = airdata::DensityAltitude(stpress, temp);
-std::cout << "Density Altitude (m): " << da.m() << std::endl;  // 0
+float pa = airdata::PressureAltitude_m(90000);
+std::cout << "Pressure Altitude (m): " << pa << std::endl;  // 988.1
 ```
 
-**types::Temperature Oat(const types::Temperature &t, const types::Altitude &h)** Returns estimated outside air temperature as a fuction of altitude
+**float DensityAltitude_m(float p, float t)** Returns density altitude (m) given static pressure (Pa) and temperature (C)
+
 ``` C++
-types::Temperature<float> temp;
-temp.c(15.0f);
-types::Altitude<float> alt;
-alt.m(500.0f);
-types::Temperature<float> eoat = airdata::Oat(temp, alt);
-std::cout << "OAT (C): " << eoat.c() << std::endl;  // 11.75
+float da = airdata::DensityAltitude_m(90000, 10);
+std::cout << "Density Altitude (m): " << da << std::endl;  // 1039.88
+```
+
+**float Oat_c(float t, float agl)** Returns estimated outside air temperature (C) as a function of surface temperature (C) and altitude above ground (m)
+
+``` C++
+float oat = airdata::Oat_c(15, 400);
+std::cout << "OAT (C): " << oat << std::endl;  // 12.4
 ```
  
-**types::Density AirDensity(const types::StaticPressure &p, const types::Temperature &t)** Returns air density given temperature and pressure
+**float AirDensity_kgpm3(float p, float t)** Returns air density (kg/m^3) given pressure (Pa) and temperature (C)
+
 ``` C++
-types::Pressure<float> stpress;
-stpress.pa(101325.0f);
-types::Temperature<float> temp;
-temp.c(15.0f);
-types::Density<float> density = airdata::AirDensity(stpress, temp);
-std::cout << "Air Density (kg-m^3): " << density.kgpm3() << std::endl;// 1.225
+float density = airdata::AirDensity_kgpm3(101325, 15);
+std::cout << "Air Density (kg-m^3): " << density << std::endl;  // 1.225
 ```
