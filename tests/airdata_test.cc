@@ -48,3 +48,64 @@ TEST(Tas, Negative) {
 TEST(Tas, Expected) {
   EXPECT_NEAR(19.8257, airdata::Tas_mps(20, 10), 0.001);
 }
+/* Test Pressure Altitude zero input */
+TEST(PressureAltitude, Zero) {
+  EXPECT_NEAR(44330.7692f, airdata::PressureAltitude_m(0.0f), 0.01f);
+}
+/* Test Pressure Altitude negative input */
+TEST(PressureAltitude, Negative) {
+  EXPECT_NEAR(44330.7692f, airdata::PressureAltitude_m(-100.0f), 0.01f);
+}
+/* Test Pressure Altitude positive input */
+TEST(PressureAltitude, Positive) {
+  EXPECT_NEAR(9984.2683f, airdata::PressureAltitude_m(26500.0f), 0.5f);
+}
+/* Test Pressure Altitude sea level input */
+TEST(PressureAltitude, SeaLevel) {
+  EXPECT_FLOAT_EQ(0.0f, airdata::PressureAltitude_m(101325.0f));
+}
+/* Test Density Altitude zero input */
+TEST(DensityAltitude, Zero) {
+  EXPECT_NEAR(44330.7692f, airdata::DensityAltitude_m(0.0f, 0.0f), 0.01f);
+}
+/* Test Density Altitude negative input */
+TEST(DensityAltitude, Negative) {
+  EXPECT_NEAR(44330.7692f, airdata::DensityAltitude_m(-100.0f, -10.0f), 0.01f);
+}
+/* Test Density Altitude positive input */
+TEST(DensityAltitude, Positive) {
+  EXPECT_NEAR(700.3124f, airdata::DensityAltitude_m(93194.0f, 10.46f), 0.05f);
+}
+/* Test Density Altitude sea level input */
+TEST(DensityAltitude, SeaLevel) {
+  EXPECT_FLOAT_EQ(0.0f, airdata::DensityAltitude_m(101325.0f, 15.0f));
+}
+/* Test Outside Air Temperature zero input */
+TEST(EstimateOAT, Zero) {
+  EXPECT_FLOAT_EQ(0.0f, airdata::Oat_c(0.0f, 0.0f));
+}
+/* Test Outside Air Temperature negative input */
+TEST(EstimateOAT, Negative) {
+  EXPECT_NEAR(-9.35f, airdata::Oat_c(-10.0f, -100.0f), 0.01f);
+}
+/* Test Outside Air Temperature positive input */
+TEST(EstimateOAT, Positive) {
+  EXPECT_NEAR(11.75f, airdata::Oat_c(15.0f, 500.0f), 0.01f);
+}
+/* Test Get Density zero input */
+TEST(GetDensity, Zero) {
+  EXPECT_FLOAT_EQ(0.0f, airdata::AirDensity_kgpm3(0.0f, 0.0f));
+}
+/* Test Get Density negative input */
+TEST(GetDensity, Negative) {
+  EXPECT_FLOAT_EQ(0.0f, airdata::AirDensity_kgpm3(-10.0f, -10.0f));
+}
+/* Test Get Density positive input */
+TEST(GetDensity, Positive) {
+  EXPECT_NEAR(1.0066, airdata::AirDensity_kgpm3(79501.0f, 2.01f), 0.01f);
+}
+/* Test Get Density sea level input */
+TEST(GetDensity, SeaLevel) {
+  EXPECT_NEAR(1.2250, airdata::AirDensity_kgpm3(101325.0f, 15.0f), 0.01f);
+}
+
