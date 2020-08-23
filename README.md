@@ -34,11 +34,11 @@ float ias = airdata::Ias_mps(500.0f);
 std::cout << "IAS (m/s): " << ias << std::endl;  // 28.5457
 ```
 
-**float Eas_mps(float ias, float p)** Returns equivalent airspeed (m/s) given indicated airspeed (m/s) and static pressure (Pa)
+**float Eas_mps(float dp, float sp)** Returns equivalent airspeed (m/s) given differential pressure (Pa) and static pressure (Pa)
 
 ```C++
-float eas = airdata::Eas_mps(ias, 90000.0f);
-std::cout << "EAS (m/s): " << eas << std::endl;  // 26.9032
+float eas = airdata::Eas_mps(500.0f, 90000.0f);
+std::cout << "EAS (m/s): " << eas << std::endl;  // 28.5429
 ```
 
 **float Tas_mps(float eas, float t)** Returns true airspeed (m/s) given equivalent airspeed (m/s) and temperature (C)
@@ -73,5 +73,5 @@ std::cout << "OAT (C): " << oat << std::endl;  // 12.4
 
 ``` C++
 float density = airdata::AirDensity_kgpm3(101325, 15);
-std::cout << "Air Density (kg-m^3): " << density << std::endl;  // 1.225
+std::cout << "Air Density (kg/m^3): " << density << std::endl;  // 1.225
 ```

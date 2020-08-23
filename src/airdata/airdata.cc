@@ -27,13 +27,13 @@ float Ias_mps(float p) {
   return STD_SEA_LEVEL_SPEED_OF_SOUND_MPS_ * sqrtf(5.0f * (powf(p / STD_SEA_LEVEL_PRESSURE_PA_ + 1.0f, 2.0f / 7.0f) - 1.0f));
 }
 /*
-* Computes equivalent airspeed (m/s) given IAS (m/s) and static pressure (Pa)
+* Computes equivalent airspeed (m/s) given differential pressure (Pa) and static pressure (Pa)
 */
-float Eas_mps(float ias, float p) {
-  if ((ias < 0.0f) || (p < 0.0f)) {
+float Eas_mps(float dp, float sp) {
+  if ((dp < 0.0f) || (sp < 0.1f)) {  // static pressure avoid divide by 0
     return 0.0f;
   }
-  return ias * sqrtf(p / STD_SEA_LEVEL_PRESSURE_PA_);
+  return STD_SEA_LEVEL_SPEED_OF_SOUND_MPS_ * sqrtf(5.0f * sp / STD_SEA_LEVEL_PRESSURE_PA_ * (powf(dp / sp + 1.0f, 2.0f / 7.0f) - 1.0f));
 }
 /*
 * Computes true airspeed (m/s) given EAS (m/s) and temperature (C)
@@ -69,7 +69,7 @@ float DensityAltitude_m(float p, float t) {
   return STD_SEA_LEVEL_TEMPERATURE_K_ / LAPSE_RATE_KPM_ * (1.0f - powf(p / STD_SEA_LEVEL_PRESSURE_PA_ * STD_SEA_LEVEL_TEMPERATURE_K_ / t_k, (LAPSE_RATE_KPM_ * GAS_CONSTANT_JPKGMOL_) / (MOLECULAR_MASS_AIR_KGPMOL_ * global::constants::G_MPS2<float> - LAPSE_RATE_KPM_ * GAS_CONSTANT_JPKGMOL_)));
 }
 /*
-* Estimated outside air temperature (C) as a fuction of surface temperature (C)
+* Estimated outside air temperature (C) as a function of surface temperature (C)
 * and AGL altitude (m) using lapse rate
 */
 float Oat_c(float t, float agl) {
