@@ -1,5 +1,8 @@
 # Changelog
 
-## v1.0.0
+## v1.0.1
+- Changed license to MIT
+- Baselined against global_defs v1.1.1
 
+## v1.0.0
 - Initial baseline
