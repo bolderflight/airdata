@@ -1,7 +1,7 @@
 # Changelog
 
 ## v1.0.2
-- Updated CHANGELOG
+- Updated CONTRIBUTING
 - Baselined against global_defs v1.1.2
 - Updated *fetch_content* from ssh to https
 
