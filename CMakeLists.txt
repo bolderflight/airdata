@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 # Project information
 project(Airdata
-  VERSION 1.0.1
+  VERSION 1.0.2
   DESCRIPTION "Airdata functions."
   LANGUAGES CXX
 )
@@ -9,8 +9,8 @@ include(FetchContent)
 # Fetch global defs
 FetchContent_Declare(
 	global_defs
-	GIT_REPOSITORY git@gitlab.com:bolderflight/software/global_defs.git
-	GIT_TAG v1.1.1
+	GIT_REPOSITORY https://gitlab.com/bolderflight/software/global_defs.git
+	GIT_TAG v1.1.2
 )
 FetchContent_MakeAvailable(global_defs)
 # Add the library target
