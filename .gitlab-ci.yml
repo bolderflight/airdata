@@ -8,8 +8,8 @@ Lint:
   tags:
     - bfs
   script: 
-    - cpplint.py --verbose=0 src/airdata/airdata.cc
-    - cpplint.py --verbose=0 include/airdata/airdata.h
+    - cpplint --verbose=0 src/airdata/airdata.cc
+    - cpplint --verbose=0 include/airdata/airdata.h
 Compile:
   stage: build
   tags:
