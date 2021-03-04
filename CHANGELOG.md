@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.0
+- Updated namespace to *bfs*
+- Baselined against units v3.1.0
+
 ## v1.0.3
 - Updated CONTRIBUTING
 - Baselined against units v2.0.0

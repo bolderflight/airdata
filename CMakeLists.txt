@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 # Project information
 project(Airdata
-  VERSION 1.0.3
+  VERSION 2.0.0
   DESCRIPTION "Airdata functions."
   LANGUAGES CXX
 )
@@ -10,7 +10,7 @@ include(FetchContent)
 FetchContent_Declare(
 	units
 	GIT_REPOSITORY https://github.com/bolderflight/units.git
-	GIT_TAG v2.0.0
+	GIT_TAG v3.1.0
 )
 FetchContent_MakeAvailable(units)
 # Add the library target

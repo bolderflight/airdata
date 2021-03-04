@@ -2,14 +2,33 @@
 * Brian R Taylor
 * brian.taylor@bolderflight.com
 * 
-* Copyright (c) 2020 Bolder Flight Systems
+* Copyright (c) 2021 Bolder Flight Systems Inc
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the “Software”), to
+* deal in the Software without restriction, including without limitation the
+* rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+* sell copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+* IN THE SOFTWARE.
 */
+
 
 #include "airdata/airdata.h"
 #include <cmath>
 #include "units/units.h"
 
-namespace airdata {
+namespace bfs {
 namespace {
 static constexpr float STD_SEA_LEVEL_SPEED_OF_SOUND_MPS_ = 340.29f;
 static constexpr float STD_SEA_LEVEL_PRESSURE_PA_ = 101325.0f;
@@ -42,7 +61,7 @@ float Eas_mps(float dp, float sp) {
 */
 float Tas_mps(float eas, float t) {
   /* Convert temperature to K */
-  float t_k = conversions::C_to_K<float>(t);
+  float t_k = convtemp(t, TempUnit::C, TempUnit::K);
   if ((eas < 0.0f) || (t_k < 0.0f)) {
     return 0.0f;
   }
@@ -58,13 +77,13 @@ float PressureAltitude_m(float p) {
   return STD_SEA_LEVEL_TEMPERATURE_K_ / LAPSE_RATE_KPM_ * (1.0f -
     powf(p / STD_SEA_LEVEL_PRESSURE_PA_,
     (LAPSE_RATE_KPM_ * GAS_CONSTANT_JPKGMOL_) /
-    (MOLECULAR_MASS_AIR_KGPMOL_ * constants::G_MPS2<float>)));
+    (MOLECULAR_MASS_AIR_KGPMOL_ * bfs::G_MPS2<float>)));
 }
 /*
 * Density altitude (m) given static pressure (Pa) and temperature (C)
 */
 float DensityAltitude_m(float p, float t) {
-  float t_k = conversions::C_to_K<float>(t);
+  float t_k = convtemp(t, TempUnit::C, TempUnit::K);
   if (p < 0.0f) {
     p = 0.0f;
   }
@@ -74,7 +93,7 @@ float DensityAltitude_m(float p, float t) {
   return STD_SEA_LEVEL_TEMPERATURE_K_ / LAPSE_RATE_KPM_ * (1.0f -
     powf(p / STD_SEA_LEVEL_PRESSURE_PA_ * STD_SEA_LEVEL_TEMPERATURE_K_ / t_k,
     (LAPSE_RATE_KPM_ * GAS_CONSTANT_JPKGMOL_) / (MOLECULAR_MASS_AIR_KGPMOL_ *
-    constants::G_MPS2<float> -
+    bfs::G_MPS2<float> -
     LAPSE_RATE_KPM_ * GAS_CONSTANT_JPKGMOL_)));
 }
 /*
@@ -88,7 +107,7 @@ float Oat_c(float t, float agl) {
 * Estimated air density (kg/m^3) from temperature (C) and pressure (Pa) 
 */
 float AirDensity_kgpm3(float p, float t) {
-  float t_k = conversions::C_to_K<float>(t);
+  float t_k = convtemp(t, TempUnit::C, TempUnit::K);
   if (p < 0.0f) {
     return 0.0f;
   }
@@ -98,4 +117,4 @@ float AirDensity_kgpm3(float p, float t) {
   return MOLECULAR_MASS_AIR_KGPMOL_ * p / (GAS_CONSTANT_JPKGMOL_ * t_k);
 }
 
-}  // namespace airdata
+}  // namespace bfs
