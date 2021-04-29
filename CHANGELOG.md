@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.1.0
+- Templated functions against the input type
+
 ## v2.0.0
 - Updated namespace to *bfs*
 - Baselined against units v3.1.0

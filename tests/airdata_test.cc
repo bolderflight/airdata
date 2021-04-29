@@ -29,42 +29,42 @@
 
 /* Test IAS zero input */
 TEST(Ias, Zero) {
-  EXPECT_EQ(0, bfs::Ias_mps(0));
+  EXPECT_EQ(0, bfs::Ias_mps(0.0f));
 }
 /* Test IAS negative input */
 TEST(Ias, Negative) {
-  EXPECT_EQ(0, bfs::Ias_mps(-10));
+  EXPECT_EQ(0, bfs::Ias_mps(-10.0f));
 }
 /* Test IAS expected input */
 TEST(Ias, Expected) {
-  EXPECT_NEAR(28.5457, bfs::Ias_mps(500), 0.001);
+  EXPECT_NEAR(28.5457, bfs::Ias_mps(500.0f), 0.001);
 }
 /* Test EAS zero input */
 TEST(Eas, Zero) {
-  EXPECT_EQ(0, bfs::Eas_mps(0, 101325));
-  EXPECT_EQ(0, bfs::Eas_mps(20, 0));
+  EXPECT_EQ(0, bfs::Eas_mps(0.0f, 101325.0f));
+  EXPECT_EQ(0, bfs::Eas_mps(20.0f, 0.0f));
 }
 /* Test EAS negative input */
 TEST(Eas, Negative) {
-  EXPECT_EQ(0, bfs::Eas_mps(-10, 101325));
-  EXPECT_EQ(0, bfs::Eas_mps(20, -10));
+  EXPECT_EQ(0, bfs::Eas_mps(-10.0f, 101325.0f));
+  EXPECT_EQ(0, bfs::Eas_mps(20.0f, -10.0f));
 }
 /* Test EAS expected input */
 TEST(Eas, Expected) {
-  EXPECT_NEAR(28.5429, bfs::Eas_mps(500, 90000), 0.001);
+  EXPECT_NEAR(28.5429, bfs::Eas_mps(500.0f, 90000.0f), 0.001);
 }
 /* Test TAS zero input */
 TEST(Tas, Zero) {
-  EXPECT_EQ(0, bfs::Tas_mps(0, 15));
+  EXPECT_EQ(0, bfs::Tas_mps(0.0f, 15.0f));
 }
 /* Test TAS negative input */
 TEST(Tas, Negative) {
-  EXPECT_EQ(0, bfs::Tas_mps(-10, 15));
-  EXPECT_EQ(0, bfs::Tas_mps(20, -300));
+  EXPECT_EQ(0, bfs::Tas_mps(-10.0f, 15.0f));
+  EXPECT_EQ(0, bfs::Tas_mps(20.0f, -300.0f));
 }
 /* Test TAS expected input */
 TEST(Tas, Expected) {
-  EXPECT_NEAR(19.8257, bfs::Tas_mps(20, 10), 0.001);
+  EXPECT_NEAR(19.8257, bfs::Tas_mps(20.0f, 10.0f), 0.001);
 }
 /* Test Pressure Altitude zero input */
 TEST(PressureAltitude, Zero) {
