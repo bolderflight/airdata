@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 # Project information
 project(Airdata
-  VERSION 2.0.0
+  VERSION 2.1.0
   DESCRIPTION "Airdata functions."
   LANGUAGES CXX
 )
@@ -10,23 +10,17 @@ include(FetchContent)
 FetchContent_Declare(
 	units
 	GIT_REPOSITORY https://github.com/bolderflight/units.git
-	GIT_TAG v3.1.0
+	GIT_TAG v3.2.0
 )
 FetchContent_MakeAvailable(units)
 # Add the library target
-add_library(airdata 
-	include/airdata/airdata.h
-	src/airdata/airdata.cc	
-)
+add_library(airdata INTERFACE)
 target_link_libraries(airdata
-	PRIVATE
+	INTERFACE
 		units
 )
 # Setup include directories 
-target_include_directories(airdata PUBLIC 
-$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-$<INSTALL_INTERFACE:include>
-)
+target_include_directories(airdata INTERFACE include/)
 
 # Example and unit testing if this project is built separately
 if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
@@ -47,7 +41,7 @@ if (PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
 	FetchContent_Declare(
 		googletest
 		GIT_REPOSITORY https://github.com/google/googletest.git
-		GIT_TAG 				release-1.10.0
+		GIT_TAG release-1.10.0
 	)
 	FetchContent_MakeAvailable(googletest)
 	enable_testing()

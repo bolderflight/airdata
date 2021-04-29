@@ -30,17 +30,17 @@
 int main() {
   float ias = bfs::Ias_mps(500.0f);
   std::cout << "IAS (m/s): " << ias << std::endl;  // 28.5457
-  float eas = bfs::Eas_mps(500, 90000.0f);
-  std::cout << "EAS (m/s): " << eas << std::endl;  // 26.9032
-  float tas = bfs::Tas_mps(eas, 17);
-  std::cout << "TAS (m/s): " << tas << std::endl;  // 26.9964
-  float pa = bfs::PressureAltitude_m(90000);
+  float eas = bfs::Eas_mps(500.0f, 90000.0f);
+  std::cout << "EAS (m/s): " << eas << std::endl;  // 28.5429
+  float tas = bfs::Tas_mps(eas, 17.0f);
+  std::cout << "TAS (m/s): " << tas << std::endl;  // 28.6418
+  float pa = bfs::PressureAltitude_m(90000.0f);
   std::cout << "Pressure Altitude (m): " << pa << std::endl;  // 988.518
-  float da = bfs::DensityAltitude_m(90000, 10);
+  float da = bfs::DensityAltitude_m(90000.0f, 10.0f);
   std::cout << "Density Altitude (m): " << da << std::endl;  // 1039.88
-  float oat = bfs::Oat_c(15, 400);
+  float oat = bfs::Oat_c(15.0f, 400.0f);
   std::cout << "OAT (C): " << oat << std::endl;  // 12.4
-  float density = bfs::AirDensity_kgpm3(101325, 15);
+  float density = bfs::AirDensity_kgpm3(101325.0f, 15.0f);
   std::cout << "Air Density (kg/m^3): " << density << std::endl;  // 1.225
   return 0;
 }
