@@ -23,9 +23,8 @@
 * IN THE SOFTWARE.
 */
 
-#include "airdata/airdata.h"
+#include "airdata.h"
 #include "gtest/gtest.h"
-
 
 /* Test IAS zero input */
 TEST(Ias, Zero) {
