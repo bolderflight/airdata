@@ -23,12 +23,15 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef INCLUDE_AIRDATA_AIRDATA_H_
-#define INCLUDE_AIRDATA_AIRDATA_H_
+#ifndef SRC_AIRDATA_H_
+#define SRC_AIRDATA_H_
 
+#if defined(ARDUINO)
+#include <Arduino.h>
+#endif
 #include <cmath>
 #include <type_traits>
-#include "units/units.h"
+#include "units.h"  // NOLINT
 
 namespace bfs {
 /*
@@ -135,4 +138,4 @@ T AirDensity_kgpm3(T p, const T t) {
 }
 }  // namespace bfs
 
-#endif  // INCLUDE_AIRDATA_AIRDATA_H_
+#endif  // SRC_AIRDATA_H_

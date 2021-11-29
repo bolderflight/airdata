@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.0.0
+- Updated interface to work with Arduino and CMake build systems
+
 ## v2.1.0
 - Templated functions against the input type
 

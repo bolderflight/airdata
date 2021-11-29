@@ -1,0 +1,7 @@
+Ias_mps	KEYWORD2
+Eas_mps	KEYWORD2
+Tas_mps	KEYWORD2
+PressureAltitude_m	KEYWORD2
+DensityAltitude_m	KEYWORD2
+Oat_c	KEYWORD2
+AirDensity_kgpm3	KEYWORD2

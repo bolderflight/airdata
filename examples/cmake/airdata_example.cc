@@ -25,7 +25,7 @@
 
 
 #include <iostream>
-#include "airdata/airdata.h"
+#include "airdata.h"
 
 int main() {
   float ias = bfs::Ias_mps(500.0f);

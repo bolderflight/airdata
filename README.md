@@ -1,14 +1,29 @@
+[![Pipeline](https://gitlab.com/bolderflight/software/airdata/badges/main/pipeline.svg)](https://gitlab.com/bolderflight/software/airdata/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+![Bolder Flight Systems Logo](img/logo-words_75.png) &nbsp; &nbsp; ![Arduino Logo](img/arduino_logo_75.png)
+
 # Airdata
-This library contains airdata functions.
+This library contains functions for computing indicated airspeed, equivalent airspeed, true airspeed, pressure altitude, density altitude, and estimating outside air temperature (OAT) and air density. This library is compatible with Arduino ARM and with CMake build systems. It would also be easy to include with other projects, since it is a header only library consisting of a single file.
    * [License](LICENSE.md)
    * [Changelog](CHANGELOG.md)
    * [Contributing guide](CONTRIBUTING.md)
 
-## Installation
+# Installation
+
+## Arduino
+Use the Arduino Library Manager to install this library or clone to your Arduino/libraries folder. Additionally, the [Bolder Flight Systems Units library](https://github.com/bolderflight/units) must be installed. This library is added as:
+
+```C++
+#include "airdata.h"
+```
+
+An example Arduino executable is located at *examples/arduino/airdata_example/airdata_example.ino*. Teensy 3.x, 4.x, and LC devices are used for testing under Arduino and this library should be compatible with other ARM devices. This library is *not* expected to work on AVR devices.
+
+## CMake
 CMake is used to build this library, which is exported as a library target called *airdata*. The header is added as:
 
-```
-#include "airdata/airdata.h"
+```C++
+#include "airdata.h"
 ```
 
 The library can be also be compiled stand-alone using the CMake idiom of creating a *build* directory and then, from within that directory issuing:
@@ -18,7 +33,7 @@ cmake ..
 make
 ```
 
-This will build the library, an example executable called *airdata_example*, and an executable for testing using the Google Test framework, called *airdata_test*. The example executable source file is located at *examples/airdata_example.cc*.
+This will build the library, an example executable called *airdata_example*, and an executable for testing using the Google Test framework, called *airdata_test*. The example executable source file is located at *examples/cmake/airdata_example.cc*.
 
 ## Namespace
 This library is within the namespace *bfs*.
