@@ -35,10 +35,10 @@ make
 
 This will build the library, an example executable called *airdata_example*, and an executable for testing using the Google Test framework, called *airdata_test*. The example executable source file is located at *examples/cmake/airdata_example.cc*.
 
-## Namespace
+# Namespace
 This library is within the namespace *bfs*.
 
-## Methods
+# Methods
 All functions are templated against the input type. Only floating point types are supported.
 
 **T Ias_mps(T p)** Returns indicated airspeed (m/s) given differential pressure (Pa)
