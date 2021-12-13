@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.0.1
+- Removed CMake define, which is no longer used in the preprocessor or build system
+
 ## v3.0.0
 - Updated interface to work with Arduino and CMake build systems
 

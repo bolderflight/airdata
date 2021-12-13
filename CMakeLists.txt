@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
 # Project information
 project(Airdata
-  VERSION 3.0.0
+  VERSION 3.0.1
   DESCRIPTION "Airdata functions."
   LANGUAGES CXX
 )
-# Add definition that we're building with CMake
-add_definitions(-D__CMAKE__)
 include(FetchContent)
 # Fetch global defs
 FetchContent_Declare(
