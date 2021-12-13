@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.0.2
+- Updated to Units v4.0.2
+
 ## v3.0.1
 - Removed CMake define, which is no longer used in the preprocessor or build system
 
