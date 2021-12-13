@@ -38,7 +38,7 @@ This will build the library, an example executable called *airdata_example*, and
 # Namespace
 This library is within the namespace *bfs*.
 
-# Methods
+# Functions
 All functions are templated against the input type. Only floating point types are supported.
 
 **T Ias_mps(T p)** Returns indicated airspeed (m/s) given differential pressure (Pa)
@@ -76,7 +76,7 @@ float da = bfs::DensityAltitude_m(90000, 10);
 std::cout << "Density Altitude (m): " << da << std::endl;  // 1039.88
 ```
 
-**T Oat_c(T t, T agl)** Returns estimated outside air temperature (C) as a function of surface temperature (C) and altitude above ground (m)
+**T Oat_c(T t, T agl)** Returns estimated outside air temperature (C) as a function of surface temperature (C) and altitude above ground (m). Uses a standard lapse rate of 6.5 C per km.
 
 ``` C++
 float oat = bfs::Oat_c(15, 400);
