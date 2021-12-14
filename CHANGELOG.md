@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.0.4
+- Updated units to v4.0.3
+
 ## v3.0.3
 - Updated CMake required version to 3.14 for FetchContent_MakeAvailable
 
