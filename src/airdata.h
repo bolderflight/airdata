@@ -32,6 +32,7 @@
 #include <cmath>
 #include <type_traits>
 #include "units.h"  // NOLINT
+#include "airdata_constants.h"  // NOLINT
 
 namespace bfs {
 /*

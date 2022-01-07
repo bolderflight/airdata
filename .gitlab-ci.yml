@@ -9,6 +9,7 @@ Lint:
     - bfs
   script: 
     - cpplint --verbose=0 src/airdata.h
+    - cpplint --verbose=0 src/airdata_constants.h
 Compile:
   stage: build
   tags:

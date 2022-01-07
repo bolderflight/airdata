@@ -3,7 +3,7 @@
 ![Bolder Flight Systems Logo](img/logo-words_75.png) &nbsp; &nbsp; ![Arduino Logo](img/arduino_logo_75.png)
 
 # Airdata
-This library contains functions for computing indicated airspeed, equivalent airspeed, true airspeed, pressure altitude, density altitude, and estimating outside air temperature (OAT) and air density. This library is compatible with Arduino ARM and with CMake build systems. It would also be easy to include with other projects, since it is a header only library consisting of a single file.
+This library contains functions for computing indicated airspeed, equivalent airspeed, true airspeed, pressure altitude, density altitude, and estimating outside air temperature (OAT) and air density. This library is compatible with Arduino ARM and with CMake build systems. It would also be easy to include with other projects, since it is a header only library.
    * [License](LICENSE.md)
    * [Changelog](CHANGELOG.md)
    * [Contributing guide](CONTRIBUTING.md)
@@ -37,6 +37,30 @@ This will build the library, an example executable called *airdata_example*, and
 
 # Namespace
 This library is within the namespace *bfs*.
+
+# Constants
+
+Standard day sea level speed of sound (m/s), pressure (Pa), and temperature(C, K) are defined as constants *SEA_LEVEL_SPEED_OF_SOUND_MPS*, *SEA_LEVEL_PRESSURE_PA*, *SEA_LEVEL_TEMPERATURE_C*, and *SEA_LEVEL_TEMPERATURE_K*. They are templated with a parameter specifying the native type.
+
+```C++
+double a_mps = bfs::SEA_LEVEL_SPEED_OF_SOUND_MPS<double>;
+double p0_pa = bfs::SEA_LEVEL_PRESSURE_PA<double>;
+double t0_c = bfs::SEA_LEVEL_TEMPERATURE_C<double>;
+double t0_k = bfs::SEA_LEVEL_TEMPERATURE_K<double>;
+```
+
+Environmental lapse rate (K/m or C/m) is defined as a constant *LAPSE_RATE_KPM*. It is templated with a parameter specifying the native type.
+
+```C++
+double l = bfs::LAPSE_RATE_KPM<double>;
+```
+
+The gas constant (J/(kg mol)) and molecular mas (kg/mol) of air are defined as constants *GAS_CONSTANT_JPKGMOL* and *MOLECULAR_MASS_AIR_KGPMOL*. They are templated with a parameter specifying the native type.
+
+```C++
+double r = bfs::GAS_CONSTANT_JPKGMOL<double>;
+float m = bfs::MOLECULAR_MASS_AIR_KGPMOL<float>;
+```
 
 # Functions
 All functions are templated against the input type. Only floating point types are supported.

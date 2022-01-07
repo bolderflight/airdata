@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.1.0
+- Moved airdata specific constants from units to this library
+
 ## v3.0.4
 - Updated units to v4.0.3
 
