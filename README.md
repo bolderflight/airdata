@@ -3,7 +3,7 @@
 ![Bolder Flight Systems Logo](img/logo-words_75.png) &nbsp; &nbsp; ![Arduino Logo](img/arduino_logo_75.png)
 
 # Airdata
-This library contains functions for computing indicated airspeed, equivalent airspeed, true airspeed, pressure altitude, density altitude, and estimating outside air temperature (OAT) and air density. This library is compatible with Arduino ARM and with CMake build systems. It would also be easy to include with other projects, since it is a header only library.
+This library contains functions for computing indicated airspeed, equivalent airspeed, true airspeed, pressure altitude, density altitude, and estimating outside air temperature (OAT) and air density. This library is compatible with Arduino and with CMake build systems.
    * [License](LICENSE.md)
    * [Changelog](CHANGELOG.md)
    * [Contributing guide](CONTRIBUTING.md)
@@ -17,7 +17,7 @@ Use the Arduino Library Manager to install this library or clone to your Arduino
 #include "airdata.h"
 ```
 
-An example Arduino executable is located at *examples/arduino/airdata_example/airdata_example.ino*. Teensy 3.x, 4.x, and LC devices are used for testing under Arduino and this library should be compatible with other ARM devices. This library is *not* expected to work on AVR devices.
+An example Arduino executable is located at *examples/arduino/airdata_example/airdata_example.ino*. Teensy 3.x, 4.x, and LC devices are used for testing under Arduino and this library should be compatible with other devices.
 
 ## CMake
 CMake is used to build this library, which is exported as a library target called *airdata*. The header is added as:
@@ -40,74 +40,73 @@ This library is within the namespace *bfs*.
 
 # Constants
 
-Standard day sea level speed of sound (m/s), pressure (Pa), and temperature(C, K) are defined as constants *SEA_LEVEL_SPEED_OF_SOUND_MPS*, *SEA_LEVEL_PRESSURE_PA*, *SEA_LEVEL_TEMPERATURE_C*, and *SEA_LEVEL_TEMPERATURE_K*. They are templated with a parameter specifying the native type.
+Standard day sea level speed of sound (m/s), pressure (Pa), and temperature(C, K) are defined as constants *SEA_LEVEL_SPEED_OF_SOUND_MPS*, *SEA_LEVEL_PRESSURE_PA*, *SEA_LEVEL_TEMPERATURE_C*, and *SEA_LEVEL_TEMPERATURE_K*.
 
 ```C++
-double a_mps = bfs::SEA_LEVEL_SPEED_OF_SOUND_MPS<double>;
-double p0_pa = bfs::SEA_LEVEL_PRESSURE_PA<double>;
-double t0_c = bfs::SEA_LEVEL_TEMPERATURE_C<double>;
-double t0_k = bfs::SEA_LEVEL_TEMPERATURE_K<double>;
+float a_mps = bfs::SEA_LEVEL_SPEED_OF_SOUND_MPS;
+float p0_pa = bfs::SEA_LEVEL_PRESSURE_PA;
+float t0_c = bfs::SEA_LEVEL_TEMPERATURE_C;
+float t0_k = bfs::SEA_LEVEL_TEMPERATURE_K;
 ```
 
-Environmental lapse rate (K/m or C/m) is defined as a constant *LAPSE_RATE_KPM*. It is templated with a parameter specifying the native type.
+Environmental lapse rate (K/m or C/m) is defined as a constant *LAPSE_RATE_KPM*.
 
 ```C++
-double l = bfs::LAPSE_RATE_KPM<double>;
+float l = bfs::LAPSE_RATE_KPM;
 ```
 
-The gas constant (J/(kg mol)) and molecular mas (kg/mol) of air are defined as constants *GAS_CONSTANT_JPKGMOL* and *MOLECULAR_MASS_AIR_KGPMOL*. They are templated with a parameter specifying the native type.
+The gas constant (J/(kg mol)) and molecular mas (kg/mol) of air are defined as constants *GAS_CONSTANT_JPKGMOL* and *MOLECULAR_MASS_AIR_KGPMOL*.
 
 ```C++
-double r = bfs::GAS_CONSTANT_JPKGMOL<double>;
-float m = bfs::MOLECULAR_MASS_AIR_KGPMOL<float>;
+float r = bfs::GAS_CONSTANT_JPKGMOL;
+float m = bfs::MOLECULAR_MASS_AIR_KGPMOL;
 ```
 
 # Functions
-All functions are templated against the input type. Only floating point types are supported.
 
-**T Ias_mps(T p)** Returns indicated airspeed (m/s) given differential pressure (Pa)
+**float Ias_mps(const float p)** Returns indicated airspeed (m/s) given differential pressure (Pa)
 
 ```C++
 float ias = bfs::Ias_mps(500.0f);
 std::cout << "IAS (m/s): " << ias << std::endl;  // 28.5457
 ```
 
-**T Eas_mps(T dp, T sp)** Returns equivalent airspeed (m/s) given differential pressure (Pa) and static pressure (Pa)
+**float Eas_mps(const float dp, const float sp)** Returns equivalent airspeed (m/s) given differential pressure (Pa) and static pressure (Pa)
 
 ```C++
 float eas = bfs::Eas_mps(500.0f, 90000.0f);
 std::cout << "EAS (m/s): " << eas << std::endl;  // 28.5429
 ```
 
-**T Tas_mps(T eas, T t)** Returns true airspeed (m/s) given equivalent airspeed (m/s) and temperature (C)
+**float Tas_mps(const float eas, const float t)** Returns true airspeed (m/s) given equivalent airspeed (m/s) and temperature (C)
 
 ``` C++
 float tas = bfs::Tas_mps(eas, 17);
 std::cout << "TAS (m/s): " << tas << std::endl;  // 28.6418
 ```
 
-**T PressureAltitude_m(T p)** Returns pressure altitue (m) given static pressure (Pa)
+**float PressureAltitude_m(const float p)** Returns pressure altitue (m) given static pressure (Pa)
 
 ``` C++
 float pa = bfs::PressureAltitude_m(90000);
 std::cout << "Pressure Altitude (m): " << pa << std::endl;  // 988.1
 ```
 
-**T DensityAltitude_m(T p, T t)** Returns density altitude (m) given static pressure (Pa) and temperature (C)
+**float DensityAltitude_m(const float p, const float t)** Returns density altitude (m) given static pressure (Pa) and temperature (C)
 
 ``` C++
 float da = bfs::DensityAltitude_m(90000, 10);
 std::cout << "Density Altitude (m): " << da << std::endl;  // 1039.88
 ```
 
-**T Oat_c(T t, T agl)** Returns estimated outside air temperature (C) as a function of surface temperature (C) and altitude above ground (m). Uses a standard lapse rate of 6.5 C per km.
+**float Oat_c(const float t, const float agl)** Returns estimated outside air temperature (C) as a function of surface temperature (C) and altitude above ground (m). Uses a standard lapse rate of 6.5 C per km.
 
 ``` C++
 float oat = bfs::Oat_c(15, 400);
 std::cout << "OAT (C): " << oat << std::endl;  // 12.4
 ```
  
-**T AirDensity_kgpm3(T p, T t)** Returns air density (kg/m^3) given pressure (Pa) and temperature (C)
+**float AirDensity_kgpm3(const float p, const float t)** Returns air density (kg/m^3) given pressure (Pa) and temperature (C)
 
 ``` C++
 float density = bfs::AirDensity_kgpm3(101325, 15);

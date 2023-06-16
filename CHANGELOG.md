@@ -1,5 +1,8 @@
 # Changelog
 
+## v4.0.0
+- Switched from templates to floats. Float should give enough precision for these computations and this should improve readability and compile times.
+
 ## v3.1.0
 - Moved airdata specific constants from units to this library
 

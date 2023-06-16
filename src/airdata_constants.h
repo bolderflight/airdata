@@ -2,7 +2,7 @@
 * Brian R Taylor
 * brian.taylor@bolderflight.com
 * 
-* Copyright (c) 2022 Bolder Flight Systems Inc
+* Copyright (c) 2023 Bolder Flight Systems Inc
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the “Software”), to
@@ -23,29 +23,22 @@
 * IN THE SOFTWARE.
 */
 
-#ifndef SRC_AIRDATA_CONSTANTS_H_
-#define SRC_AIRDATA_CONSTANTS_H_
+#ifndef AIRDATA_SRC_AIRDATA_CONSTANTS_H_  // NOLINT
+#define AIRDATA_SRC_AIRDATA_CONSTANTS_H_
 
 /* Standard day sea level speed of sound, m/s */
-template<typename T>
-static constexpr T SEA_LEVEL_SPEED_OF_SOUND_MPS = static_cast<T>(340.29);
+static constexpr float SEA_LEVEL_SPEED_OF_SOUND_MPS = 340.29f;
 /* Standard day sea level pressure, Pa */
-template<typename T>
-static constexpr T SEA_LEVEL_PRESSURE_PA = static_cast<T>(101325.0);
+static constexpr float SEA_LEVEL_PRESSURE_PA = 101325.0f;
 /* Standard day sea level temperature, C */
-template<typename T>
-static constexpr T SEA_LEVEL_TEMPERATURE_C = static_cast<T>(15.0);
+static constexpr float SEA_LEVEL_TEMPERATURE_C = 15.0f;
 /* Standard day sea level temperature, K */
-template<typename T>
-static constexpr T SEA_LEVEL_TEMPERATURE_K = static_cast<T>(288.15);
+static constexpr float SEA_LEVEL_TEMPERATURE_K = 288.15f;
 /* Environmental lapse rate K/m */
-template<typename T>
-static constexpr T LAPSE_RATE_KPM = static_cast<T>(0.0065);
+static constexpr float LAPSE_RATE_KPM = 0.0065f;
 /* Gas constant J/kg-mol */
-template<typename T>
-static constexpr T GAS_CONSTANT_JPKGMOL = static_cast<T>(8.31446261815324);
+static constexpr float GAS_CONSTANT_JPKGMOL = 8.31446261815324f;
 /* Molecular mass of air, kg/mol */
-template<typename T>
-static constexpr T MOLECULAR_MASS_AIR_KGPMOL = static_cast<T>(0.0289644);
+static constexpr float MOLECULAR_MASS_AIR_KGPMOL = 0.0289644f;
 
-#endif  // SRC_AIRDATA_CONSTANTS_H_
+#endif  // AIRDATA_SRC_AIRDATA_CONSTANTS_H_ NOLINT
