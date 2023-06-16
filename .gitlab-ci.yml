@@ -10,6 +10,7 @@ Lint:
   script: 
     - cpplint --verbose=0 src/airdata.h
     - cpplint --verbose=0 src/airdata_constants.h
+    - cpplint --verbose=0 src/airdata.cpp
 Compile:
   stage: build
   tags:
